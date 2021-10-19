@@ -1,5 +1,5 @@
 local skynet = require "skynet"
-local runconfig = requre "runconfig"
+local runconfig = require "runconfig"
 
 skynet.start(function()
     -- 初始化
