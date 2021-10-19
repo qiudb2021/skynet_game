@@ -4,8 +4,8 @@ cpath     = "./skynet/cservice/?.so"    --用C编写的服务模块的位置
 bootstrap = "snlua bootstrap"       --启动的第一个服务
 
 --bootstrap配置项
-start     = "main"                      --主服务入口
-harbor    = 0                          --不使用主从节点模式
+start  = "main" --主服务入口
+harbor = 0      --不使用主从节点模式
 
 --lua配置项
 lualoader   = "./skynet/lualib/loader.lua"
