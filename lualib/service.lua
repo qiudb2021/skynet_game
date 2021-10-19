@@ -52,7 +52,7 @@ local function init()
     end
 end
 
-function M.resp.start(name, id, ...)
+function M.start(name, id, ...)
     M.name = name
     M.id = id
     skynet.start(init)
