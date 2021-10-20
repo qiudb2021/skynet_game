@@ -54,7 +54,7 @@ end
 
 function M.start(name, id, ...)
     M.name = name
-    M.id = id
+    M.id = tonumber(id)
     skynet.start(init)
 end
 
