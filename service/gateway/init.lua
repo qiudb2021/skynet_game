@@ -89,7 +89,7 @@ local function process_msg(fd, msgstr)
     if not playerid then
         local login = random_login()
         skynet.error("todo require login to "..login.." auth username and password.")
-        -- skynet.send(login, "lua", "client", fd, cmd, msg)
+        skynet.send(login, "lua", "client", fd, cmd, msg)
     -- 已完成登录
     else
         local gplayer = players[playerid]
