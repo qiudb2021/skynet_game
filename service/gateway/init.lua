@@ -195,6 +195,7 @@ function s.resp.sure_agent( source, fd, playerid, agent )
     return true
 end
 
+-- agentmgr kick player.
 function s.resp.kick( source, playerid )
     local gplayer = players[playerid]
     if not gplayer then
