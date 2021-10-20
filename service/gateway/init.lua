@@ -37,7 +37,7 @@ function s.init()
     skynet.error("[start]"..s.name.." "..s.id)
     local node = skynet.getenv("node")
     local nodecfg = runconfig[node]
-    local port = nodecfg.gateway[s.id]
+    local port = nodecfg.gateway[s.id].port
 
     local listenfd = socket.listen("0.0.0.0", port)
     skynet.error("gateway listen socket : ", "0.0.0.0 ", port);
