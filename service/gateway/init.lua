@@ -25,12 +25,54 @@ local function gateplayer()
     return m;
 end
 
+local function disconnect(fd)
+    -- body
+end
+
+local function process_msg(fd, msgstr)
+    skynet.error("gateway"..s.id.." recv from ["..fd.."] msgstr "..msgstr)
+end
+
+-- 字符串协议格式，每条消息由“\r\n”作为结束符，
+-- 消息的各个参数用英文逗号分隔，第一个参数代表消息名称。
+local function process_buff(fd, readbuff)
+    while true do
+        local msgstr, rest = string.match( readbuff, "(.-)\r\n(.*)" )
+        if msgstr then
+            readbuff = rest
+            process_msg(fd, msgstr)
+        else
+            return readbuff
+        end
+    end
+end
+
+-- 每一条新连接接收数据处理
+local function recv_loop(fd)
+    socket.start(fd)
+    skynet.error("socket connected "..fd)
+    local readbuff = ""
+    while true do
+        local recvstr = socket.read(fd)
+        if recvstr then
+            readbuff = readbuff..recvstr
+            readbuff = process_buff(fd, readbuff)
+        else
+            skynet.error("socket close "..fd)
+            disconnect(fd)
+            socket.close(fd)
+            return
+        end
+    end
+end
+
+-- 接收新连接
 local function connect(fd, addr)
     print("connect from "..addr.." "..fd)
     local c = conn();
     conns[fd] = c
     c.fd = fd
-    -- skynet.fork(recv_loop, fd)
+    skynet.fork(recv_loop, fd)
 end
 
 function s.init()
