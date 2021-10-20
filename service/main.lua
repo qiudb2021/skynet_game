@@ -11,7 +11,7 @@ skynet.start(function()
     local nodecfg = runconfig[node]
 
     -- agentmgr
-    if nodecfg.agentmgr.node == node then
+    if runconfig.agentmgr.node == node then
         handle = skynet.newservice("agentmgr", "agentmgr")
         skynet.name("agentmgr", handle)
     end
