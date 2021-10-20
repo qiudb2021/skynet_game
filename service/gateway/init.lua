@@ -1,6 +1,7 @@
 local skynet = require "skynet"
 local s = require "service"
 local socket = require "skynet.socket"
+local cluster = require "skynet.cluster"
 local runconfig = require "runconfig"
 
 -- 保存客户端连接
@@ -26,7 +27,21 @@ local function gateplayer()
 end
 
 local function disconnect(fd)
-    -- body
+    local conn = conns[fd]
+    if not conn then
+        return
+    end
+
+    local playerid = conn.playerid
+    -- 还未完成登录就下线
+    if not playerid then
+        return
+    -- 已经在游戏中
+    else
+        players[playerid] = nil
+        local reason = "断线"
+        cluster.call("agentmgr", "lua", "reqkick", playerid, reason)
+    end
 end
 
 -- unpack msg
@@ -133,6 +148,67 @@ function s.init()
     local listenfd = socket.listen("0.0.0.0", port)
     skynet.error("gateway listen socket : ", "0.0.0.0 ", port);
     socket.start(listenfd, connect);
+end
+
+-- forward login message.
+function s.resp.send_by_fd( source, fd, msg )
+    local c = conns[fd]
+    if not c then
+        return
+    end
+
+    skynet.error("gateway "..s.id.." send "..fd.."["..msg[1].."] {"..table.concat( msg, "," ))
+    socket.write(fd, str_pack(msg[1], msg))
+end
+
+-- forward agent message.
+function s.resp.send( source, playerid, msg )
+    local gplayer = players[playerid]
+    if not gplayer then
+        return
+    end
+
+    local c = gplayer.conn
+    if not c then
+        return
+    end
+
+    s.resp.send_by_fd(source, c.fd, msg)
+end
+
+-- login -> gateway
+function s.resp.sure_agent( source, fd, playerid, agent )
+    local conn = conns[fd]
+    -- 登录过程中已经下线
+    if not conn then
+        cluster.call("agentmgr", "lua", "reqkick", playerid, "未完成登录即下线")
+        return false
+    end
+
+    conn.playerid = playerid
+    local gplayer = gateplayer()
+    gplayer.playerid = playerid
+    gplayer.agent = agent
+    gplayer.conn = conn
+    players[playerid] = gplayer
+
+    return true
+end
+
+function s.resp.kick( source, playerid )
+    local gplayer = players[playerid]
+    if not gplayer then
+        return
+    end
+
+    players[playerid] = nil
+    local conn = gplayer.conn
+    if not conn then
+        return
+    end
+
+    disconnect(conn.fd)
+    socket.close(conn.fd)
 end
 
 s.start(...)
