@@ -33,7 +33,6 @@ end
 -- 字符串协议格式，每条消息由“\r\n”作为结束符，
 -- 消息的各个参数用英文逗号分隔，第一个参数代表消息名称。
 local function str_unpack(msgstr)
-    skynet.error("gateway"..s.id.." recv from ["..fd.."] msgstr "..msgstr)
     local msg = {}
     while true do
         local arg, rest = string.match( msgstr,"(.-),(.*)" )
@@ -62,6 +61,7 @@ local function random_login()
 end
 
 local function process_msg(fd, msgstr)
+    skynet.error("gateway"..s.id.." recv from ["..fd.."] msgstr "..msgstr)
     local cmd, msg = str_unpack(msgstr)
     if not cmd then
         skynet.error("gateway recv from ["..fd.."] not cmd.")
