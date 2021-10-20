@@ -40,7 +40,7 @@ local function str_unpack(msgstr)
             msgstr = rest
             table.insert( msg, arg )
         else
-            table.insert( msg, rest )
+            table.insert( msg, msgstr )
             break
         end
     end
