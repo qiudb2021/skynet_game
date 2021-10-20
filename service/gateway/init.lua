@@ -1,7 +1,7 @@
 local skynet = require "skynet"
 local s = require "service"
-local socket = require "skynet.lualib.skynet.socket"
-local runconfig = require "etc.runconfig"
+local socket = require "skynet.socket"
+local runconfig = require "runconfig"
 
 -- 保存客户端连接
 local conns = {} -- [fd] = conn
