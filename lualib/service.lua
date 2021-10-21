@@ -11,6 +11,16 @@ local M = {
     -- 分发方法
     resp = {}
 }
+
+local function arg2str(...)
+    local argstr = ""
+    print(select("#",...))
+    for i=1,select("#",...) do
+        local str = select(i,...)
+        argstr = argstr..str
+    end
+    return argstr
+end
 --[[
 note:
     1) skynet.ret(msg, sz) 将打包好的消息回应给当前任务的请求源头
@@ -24,6 +34,7 @@ local function traceback(err)
 end
 
 local function dispatch(session, address, cmd, ...)
+    skynet.error(skynet.self().." recv message from "..address .. "["..cmd.."]"..arg2str(...))
     local func = M.resp[cmd]
     if not func then
         skynet.ret()
