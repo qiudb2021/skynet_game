@@ -20,7 +20,7 @@ local function arg2str(...)
         if type(arg) == "table" then
             argstr = argstr..table.concat( arg, ", " )
         else 
-            argstr = argstr..arg
+            argstr = argstr..", "..arg
         end
     end
     return argstr
