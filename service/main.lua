@@ -16,8 +16,8 @@ skynet.start(function()
     skynet.name("nodemgr", nodemgr)
 
     -- 集群
-    cluster.reload(runconfig.cluster)
-    cluster.open(node)
+    -- cluster.reload(runconfig.cluster)
+    -- cluster.open(node)
 
     -- gateway
     for i, v in pairs(nodecfg.gateway or {}) do
