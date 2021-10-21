@@ -1,8 +1,8 @@
 return {
     -- 集群
     cluster = {
-        node1 = "127.0.0.1:7001",
-        node2 = "127.0.0.1:7002"
+        node1 = "10.0.4.5:7001",
+        node2 = "10.0.4.5:7002"
     },
     agentmgr = {
         node = "node1"
