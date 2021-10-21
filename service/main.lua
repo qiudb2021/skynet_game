@@ -19,27 +19,27 @@ skynet.start(function()
     cluster.reload(runconfig.cluster)
     cluster.open(node)
 
-    -- -- gateway
-    -- for i, v in pairs(nodecfg.gateway or {}) do
-    --     handle = skynet.newservice("gateway", "gateway", i)
-    --     skynet.name("gateway"..i, handle)
-    -- end
+    -- gateway
+    for i, v in pairs(nodecfg.gateway or {}) do
+        handle = skynet.newservice("gateway", "gateway", i)
+        skynet.name("gateway"..i, handle)
+    end
 
-    -- -- login
-    -- for i, v in pairs(nodecfg.login or {}) do
-    --     handle = skynet.newservice("login", "login", i)
-    --     skynet.name("login"..i, handle)
-    -- end
+    -- login
+    for i, v in pairs(nodecfg.login or {}) do
+        handle = skynet.newservice("login", "login", i)
+        skynet.name("login"..i, handle)
+    end
 
-    -- -- agentmgr
-    -- local anode = runconfig.agentmgr.node
-    -- if anode == node then
-    --     handle = skynet.newservice("agentmgr", "agentmgr")
-    --     skynet.name("agentmgr", handle)
-    -- else
-    --     local proxy = cluster.proxy(anode, "agentmgr")
-    --     skynet.name("agentmgr", proxy)
-    -- end
+    -- agentmgr
+    local anode = runconfig.agentmgr.node
+    if anode == node then
+        handle = skynet.newservice("agentmgr", "agentmgr")
+        skynet.name("agentmgr", handle)
+    else
+        local proxy = cluster.proxy(anode, "agentmgr")
+        skynet.name("agentmgr", proxy)
+    end
 
     skynet.exit()
 end)
