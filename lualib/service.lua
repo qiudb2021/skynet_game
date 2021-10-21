@@ -16,8 +16,12 @@ local function arg2str(...)
     local argstr = ""
     print(select("#",...))
     for i=1,select("#",...) do
-        local str = select(i,...)
-        argstr = argstr..str
+        local arg = select(i,...)
+        if type(arg) == "table" then
+            argstr = argstr..table.concat( argg, ", " )
+        else 
+            argstr = argstr..str
+        end
     end
     return argstr
 end
