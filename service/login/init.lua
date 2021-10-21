@@ -20,7 +20,7 @@ function s.client.login( fd, msg, source )
     local node = skynet.getenv("node")
    
     --校验密码
-    if password ~= 123 then
+    if password ~= '123' then
         return {"login", 1, "密码错误"}
     end
 
