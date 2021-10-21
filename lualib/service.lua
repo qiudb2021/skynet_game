@@ -18,7 +18,7 @@ local function arg2str(...)
     for i=1,select("#",...) do
         local arg = select(i,...)
         if type(arg) == "table" then
-            argstr = argstr..table.concat( argg, ", " )
+            argstr = argstr..table.concat( arg, ", " )
         else 
             argstr = argstr..arg
         end
