@@ -38,7 +38,7 @@ local function traceback(err)
 end
 
 local function dispatch(session, address, cmd, ...)
-    skynet.error(skynet.self().." recv message from "..address .. "["..cmd.."]"..arg2str(...))
+    skynet.error(skynet.address().." recv message from "..address .. "["..cmd.."]"..arg2str(...))
     local func = M.resp[cmd]
     if not func then
         skynet.ret()
